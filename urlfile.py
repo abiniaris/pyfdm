@@ -16,6 +16,7 @@
 import urllib.request, time
 from math import ceil
 from urlfilechunk import UrlFileChunk
+from progressbar import printProgressBar
 import os
 
 class UrlFile:
@@ -50,7 +51,7 @@ class UrlFile:
             downloaded=self.__downloaded(filechunks)
             step    =downloaded - step
 
-            self.printProgressBar(downloaded, self.filesize, speed=step)
+            printProgressBar(downloaded, self.filesize,step)
             
             if self.filesize<=downloaded:
                 break
@@ -95,7 +96,7 @@ class UrlFile:
         """
         Merge file chunks to one file
         """
-        urlfile=open(os_path_join(self.path,self.filename), 'wb')
+        urlfile=open(os.path.join(self.path,self.filename), 'wb')
         
         for filechunk in filechunks:
             tmpfile=open(filechunk.filename, 'rb')
@@ -108,23 +109,4 @@ class UrlFile:
             
                 urlfile.write(buffer)
             
-        urlfile.close()   
-
-    
-    def printProgressBar (self,iteration,total=0,speed=0):
-        """
-        Progress bar with completion percentage 
-        """
-        #prefix,suffix,length,fill,printEnd='Progress:','Complete',50,'█',"\r"
-        
-        print('\r%s |%s|%s%% %s (%s)'%\
-                    ('Progress','█' * int(50 * iteration // total) + '-' * (50 - int(50 * iteration // total)),\
-                    '{0:.1f}'.format(100 * (iteration / float(total))),\
-                     'Complete','{:.2f} MB/sec'.format(speed/1024/1024)),end ="\r")      
-        
-"""
-        dispeed = '{:.2f} MB/sec'.format(speed/1024/1024)
-        percent = ("{0:.1f}").format(100 * (iteration / float(total)))
-        filledLength = int(length * iteration // total)
-        bar = fill * filledLength + '-' * (length - filledLength)
-        print('\r%s |%s|%s%% %s (%s)' % (prefix, bar, percent,suffix,dispeed), end = printEnd)"""
+        urlfile.close()

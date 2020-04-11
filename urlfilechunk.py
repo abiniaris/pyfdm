@@ -35,7 +35,7 @@ class UrlFileChunk(Thread):
         
         f = open(self.filename, 'wb')
         
-        block_size-8192
+        block_size=8192
         while True:
             buffer = u.read(block_size)
             
