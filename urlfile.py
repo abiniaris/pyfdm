@@ -21,7 +21,7 @@ import os
 
 class UrlFile:
     
-    BLOCK_SZ=8192
+    
 
     def __init__(self, url, path, threads):
         
@@ -97,12 +97,13 @@ class UrlFile:
         Merge file chunks to one file
         """
         urlfile=open(os.path.join(self.path,self.filename), 'wb')
-        
+        block_sz=8192
+
         for filechunk in filechunks:
             tmpfile=open(filechunk.filename, 'rb')
         
             while True:
-                buffer = tmpfile.read(BLOCK_SZ)
+                buffer = tmpfile.read(block_sz)
                 
                 if not buffer:
                     break
