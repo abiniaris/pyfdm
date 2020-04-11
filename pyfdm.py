@@ -40,7 +40,6 @@ def getConfig():
     
     return config['settings']['download_path'] 
 
-#dm = UrlFile("https://download-cf.jetbrains.com/idea/ideaIC-2019.3.4.exe",8).download()
 options=getArgs()
 path = getConfig()
 dm = UrlFile(options.urlfile,path,options.threads).download()
