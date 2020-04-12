@@ -13,8 +13,9 @@
 #    You should have received a copy of the GNU General Public License
 #    along with PYFDM.  If not, see <http://www.gnu.org/licenses/>.
 
+
 import configparser, os
-from urlfile import UrlFile
+from .urlfile import UrlFile
 from argparse import ArgumentParser
 
 def getArgs():
@@ -22,25 +23,20 @@ def getArgs():
     Configure and parse CLI Arguments
     """
     parser = ArgumentParser()
-    parser.add_argument("-f", "--file", required=True, dest="urlfile", help="URL File")
+    parser.add_argument("-f", "--file", required=True, dest="urlfile", help="Url FILE")
+    parser.add_argument("-p", "--path", required=True, dest="path", help="Download Path")
     parser.add_argument("-t", "--threads", default=2, type=int, choices=range(1,10),metavar="[1-10]", dest="threads", help="Number of parallel threads",)
+  
     options=parser.parse_args()
     
+    if not os.path.exists(options.path):
+        raise ValueError("Please provide correct download path")
+
+    if not os.path.isdir(options.path):
+        raise ValueError("Please provide correct download path")
+
     return options
 
-def getConfig():
-    """
-    Load configuration file
-    """
-    config = configparser.ConfigParser()
-    config.read('config.ini')
-    
-    if not os.path.exists(config['settings']['download_path']):
-        raise ValueError("Please config proper download path in config.ini file")
-    
-    return config['settings']['download_path'] 
-
-options=getArgs()
-path = getConfig()
-dm = UrlFile(options.urlfile,path,options.threads).download()
- 
+if __name__ == "__main__":
+    options=getArgs()
+    dm = UrlFile(options.urlfile,options.path,options.threads).download()

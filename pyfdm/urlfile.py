@@ -15,8 +15,8 @@
 
 import urllib.request, time
 from math import ceil
-from urlfilechunk import UrlFileChunk
-from progressbar import printProgressBar
+from .urlfilechunk import UrlFileChunk
+from .progressbar import printProgressBar
 import os
 
 class UrlFile:
